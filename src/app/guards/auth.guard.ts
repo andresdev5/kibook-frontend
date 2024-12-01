@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
 
-export const AuthGuard: CanActivateFn = (
+export const authGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
 ) => {
@@ -16,8 +16,27 @@ export const AuthGuard: CanActivateFn = (
     const isLoggedIn = authService.isLoggedIn();
 
     if (!isLoggedIn) {
-        router.navigate(['/login']);
+        router.navigate(['/login'], {
+            queryParams: {
+                returnUrl: state.url,
+            },
+        });
     }
 
     return isLoggedIn;
 };
+
+export const loggedInGuard: CanActivateFn = (
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+) => {
+    const router = inject(Router);
+    const authService = inject(AuthService);
+    const isLoggedIn = authService.isLoggedIn();
+
+    if (isLoggedIn) {
+        router.navigate(['/']);
+    }
+
+    return !isLoggedIn;
+}

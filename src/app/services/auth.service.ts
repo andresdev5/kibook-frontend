@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AuthResponseModel } from '@app/models/auth-response.model';
 import { UserModel } from '@app/models/user.model';
 import { TokenUserModel } from '@app/models/token-user.model';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+    #router = inject(Router);
+
     constructor(private httpClient: HttpClient) {
         if (this.isTokenExpired() || !this.decodeToken()) {
             this.removeToken();
@@ -101,5 +104,10 @@ export class AuthService {
         });
 
         return response;
+    }
+
+    logout() {
+        this.removeToken();
+        this.#router.navigate(['/login']);
     }
 }

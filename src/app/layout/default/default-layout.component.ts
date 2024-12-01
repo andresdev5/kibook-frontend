@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
     standalone: true,
@@ -7,6 +8,9 @@ import { RouterOutlet } from '@angular/router';
     imports: [RouterOutlet],
 })
 export class DefaultLayoutComponent implements OnInit {
-    constructor() { }
+    constructor(private authService: AuthService) {}
     ngOnInit() { }
+    logout() {
+        this.authService.logout();
+    }
 }
