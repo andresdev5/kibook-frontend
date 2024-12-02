@@ -106,6 +106,10 @@ export class AuthService {
         return response;
     }
 
+    register(user: UserModel): Observable<UserModel> {
+        return this.httpClient.post<UserModel>('/auth/register', user);
+    }
+
     logout() {
         this.removeToken();
         this.#router.navigate(['/login']);

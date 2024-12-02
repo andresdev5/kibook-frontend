@@ -3,13 +3,20 @@
 >
     <div class="bg-white shadow-md rounded-lg p-8 max-w-sm w-full">
         <h1 class="text-2xl font-semibold mb-6 text-black text-center">Autentificarse</h1>
-        <form class="flex flex-col">
+        <!-- error alert -->
+         @if (error) {
+            <div class="mb-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ error }}</span>
+            </div>
+         }
+        <form class="flex flex-col" [formGroup]="form" (ngSubmit)="login()">
             <div class="mb-5">
                 <label
                     for="email"
                     class="block text-gray-500 mb-2"
                 >Nombre de usuario o correo electrónico</label>
                 <input
+                    formControlName="username"
                     type="email"
                     id="email"
                     class="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-1 focus:ring-black focus:outline-none"
@@ -22,6 +29,7 @@
                     class="block text-gray-500 mb-2w"
                 >Contraseña</label>
                 <input
+                    formControlName="password"
                     type="password"
                     id="password"
                     class="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-1 focus:ring-black focus:outline-none"
@@ -29,15 +37,18 @@
                 />
             </div>
             <button
+                [disabled]="submitting || !form.valid"
                 type="submit"
-                class="bg-black text-white font-medium p-3 mt-8 rounded-lg hover:bg-gray-800 transition-all duration-300"
-                (click)="login()"
+                class="bg-blue-500 text-white font-medium p-3 mt-8 rounded-lg hover:bg-blue-800 transition-all duration-300"
+                [ngClass]="{
+                    'bg-blue-200 hover:bg-blue-200': (submitting || !form.valid)
+                }"
             >
                 Iniciar sesión
             </button>
             <p class="text-sm text-gray-400 text-center mt-6">
                 No tienes cuenta?
-                <a href="#" class="text-black font-semibold hover:underline"
+                <a routerLink="/register" class="text-black font-semibold hover:underline"
                     >Registrate</a
                 >
             </p>
