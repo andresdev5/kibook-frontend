@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
+import { IStaticMethods } from 'flyonui/flyonui';
+
+declare global {
+    interface Window {
+        HSStaticMethods: IStaticMethods;
+    }
+}
+
 
 @Component({
     selector: 'app-root',
@@ -12,9 +20,18 @@ import { AuthService } from '@app/services/auth.service';
 export class AppComponent implements OnInit {
     title = 'kibook';
 
-    constructor(private authService: AuthService) {}
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) { }
 
     ngOnInit() {
-
+        this.router.events.subscribe((ev: any) => {
+            if (ev instanceof NavigationEnd) {
+                setTimeout(() => {
+                    window.HSStaticMethods.autoInit();
+                }, 100);
+            }
+        });
     }
 }

@@ -1,11 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{html,ts}"
+    "./src/**/*.{html,ts}",
+    './node_modules/flyonui/dist/js/*.js',
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('flyonui'), 
+    require('flyonui/plugin')
+  ],
+  flyonui: {
+    themes: ["light", "dark", "corporate"]
+  }
 }
-

@@ -34,7 +34,9 @@
             "styles": [
               "src/styles/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/flyonui/flyonui.js"
+            ]
           },
           "configurations": {
             "production": {

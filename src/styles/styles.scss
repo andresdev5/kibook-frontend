@@ -11,7 +11,13 @@ html, body, #root {
 }
 
 router-outlet + * {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
+}
+
+body {
+  background: #f1f2f6;
+  font-size: 16px;
 }

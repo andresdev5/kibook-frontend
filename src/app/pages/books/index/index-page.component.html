@@ -1,1 +1,23 @@
-books index page
+<div class="grid grid-cols-3 md:grid-cols-4">
+    @for (book of books; track $index) {
+        <div class="card sm:max-w-sm mx-4 my-7">
+            <figure style="max-height: 19rem;">
+                <img [src]="apiUrl + book.imageUrl" alt="Watch" />
+            </figure>
+            <div class="card-body">
+                <h5 class="card-title mb-2.5 text-lg">{{ book.title }}</h5>
+                <p class="mb-0">{{ book.synopsis | truncateText:100:'...' }}</p>
+            </div>
+            <div class="card-footer text-center flex flex-col gap-1">
+                <div class="flex items-center">
+                    <i class="icon-[tabler--user-filled]"></i>
+                    <span class="ml-2">{{ book.authors[0].firstName + ' ' + book.authors[0].lastName }}</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="icon-[tabler--calendar]"></i>
+                    <span class="ml-2">{{ book.createdAt | date:'short' }}</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

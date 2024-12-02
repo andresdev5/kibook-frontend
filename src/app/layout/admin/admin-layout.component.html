@@ -1,4 +1,8 @@
-<div>
-    <h1>Admin</h1>
-    <router-outlet></router-outlet>
+<div class="flex flex-col h-full">
+    <div class="flex flex-1">
+        <admin-layout-sidebar />
+        <div class="flex flex-col flex-1 overflow-y-auto p-7">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
