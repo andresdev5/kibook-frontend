@@ -1,37 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
-import { IStaticMethods } from 'flyonui/flyonui';
+import { MessageService } from 'primeng/api';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
-declare global {
-    interface Window {
-        HSStaticMethods: IStaticMethods;
-    }
-}
-
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, ToastModule, FontAwesomeModule],
+    providers: [MessageService],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-    title = 'kibook';
-
     constructor(
         private authService: AuthService,
-        private router: Router
-    ) { }
-
-    ngOnInit() {
-        this.router.events.subscribe((ev: any) => {
-            if (ev instanceof NavigationEnd) {
-                setTimeout(() => {
-                    window.HSStaticMethods.autoInit();
-                }, 100);
-            }
-        });
+        private router: Router,
+        private faLibrary: FaIconLibrary,
+    ) {
+        faLibrary.addIconPacks(
+            fas,
+            far,
+            fab,
+        );
     }
+
+    ngOnInit() {}
 }

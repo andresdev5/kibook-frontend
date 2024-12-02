@@ -1,0 +1,148 @@
+<div class="bg-white rounded-sm shadow-sm p-6 mx-auto xl:w-3/4 md:w-5/6 sm:w-full">
+    <h1 class="text-2xl font-semibold mb-5 border-b border-slate-200 pb-4">Agregar libro</h1>
+
+    <form method="post" (submit)="submit()" [formGroup]="bookForm">
+        @let hasTitleError = bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched);
+        @let hasIsbnError = bookForm.get('isbn')?.invalid && (bookForm.get('isbn')?.dirty || bookForm.get('isbn')?.touched);
+        @let hasAuthorsErrors = bookForm.get('authors')?.invalid && (bookForm.get('authors')?.dirty || bookForm.get('authors')?.touched);
+        @let hasGenresErrors = bookForm.get('genres')?.invalid && (bookForm.get('genres')?.dirty || bookForm.get('genres')?.touched);
+        @let hasSynopsisError = bookForm.get('synopsis')?.invalid && (bookForm.get('synopsis')?.dirty || bookForm.get('synopsis')?.touched);
+        @let hasPublisherError = bookForm.get('publisher')?.invalid && (bookForm.get('publisher')?.dirty || bookForm.get('publisher')?.touched);
+        @let hasYearError = bookForm.get('year')?.invalid && (bookForm.get('year')?.dirty || bookForm.get('year')?.touched);
+        @let hasStockError = bookForm.get('stock')?.invalid && (bookForm.get('stock')?.dirty || bookForm.get('stock')?.touched);
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-200">*</span>
+                <span class="ml-1">Título</span>
+            </label>
+            <input pInputText type="text" class="form-input input w-full" aria-label="input" formControlName="title" [ngClass]="{
+                'border-red-500': hasTitleError
+            }" />
+            <div class="errors text-sm" *ngIf="hasTitleError">
+                <div class="error text-red-400" *ngIf="bookForm.get('title')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">ISBN</span>
+            </label>
+            <p-inputMask styleClass="w-full" formControlName="isbn" mask="999-9-99999-999-9" placeholder="111-1-11111-111-1"  />
+            <div class="errors text-sm" *ngIf="hasIsbnError">
+                <div class="error text-red-400" *ngIf="bookForm.get('isbn')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Editorial</span>
+            </label>
+            <input pInputText type="text" styleClass="w-full" formControlName="publisher" />
+            <div class="errors text-sm" *ngIf="hasPublisherError">
+                <div class="error text-red-400" *ngIf="bookForm.get('publisher')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Año de publicación</span>
+            </label>
+            <p-inputNumber styleClass="w-full" formControlName="year" format="false" />
+            <div class="errors text-sm" *ngIf="hasYearError">
+                <div class="error text-red-400" *ngIf="bookForm.get('year')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Sinopsis</span>
+            </label>
+            <textarea
+                rows="5"
+                cols="30"
+                pInputTextarea
+                formControlName="synopsis">
+            </textarea>
+            <div class="errors text-sm" *ngIf="hasSynopsisError">
+                <div class="error text-red-400" *ngIf="bookForm.get('synopsis')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Género(s)</span>
+            </label>
+            <p-autoComplete
+                class="w-full authors-autocomplete"
+                panelStyleClass="w-full"
+                styleClass="w-full"
+                inputStyleClass="w-full"
+                formControlName="genres"
+                [suggestions]="filteredGenres"
+                (completeMethod)="searchGenre($event)"
+                optionLabel="name"
+                [multiple]="true" />
+            <div class="errors text-sm" *ngIf="hasGenresErrors">
+                <div class="error text-red-400" *ngIf="bookForm.get('genres')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Autor(es)</span>
+            </label>
+            <p-autoComplete
+                class="w-full authors-autocomplete"
+                panelStyleClass="w-full"
+                styleClass="w-full"
+                inputStyleClass="w-full"
+                formControlName="authors"
+                [suggestions]="filteredAuthors"
+                (completeMethod)="searchAuthor($event)"
+                optionLabel="label"
+                [multiple]="true" />
+            <div class="errors text-sm" *ngIf="hasAuthorsErrors">
+                <div class="error text-red-400" *ngIf="bookForm.get('authors')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 flex flex-col gap-1 form-group">
+            <label class="block text">
+                <span class="text-red-400">*</span>
+                <span class="ml-1">Stock</span>
+            </label>
+            <p-inputNumber styleClass="w-full" formControlName="stock" format="false" [min]="0" />
+            <div class="errors text-sm" *ngIf="hasStockError">
+                <div class="error text-red-400" *ngIf="bookForm.get('stock')?.errors?.['required']">
+                    El campo es requerido
+                </div>
+            </div>
+        </div>
+
+        <div class="form-buttons flex justify-end gap-3">
+            <p-button class="btn btn-primary" type="submit">Guardar</p-button>
+        </div>
+    </form>
+</div>
+<p-toast />

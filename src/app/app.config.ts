@@ -8,6 +8,7 @@ import { apiInterceptor } from '@app/interceptors/api.interceptor';
 
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 registerLocaleData(localeEs, 'es');
 
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         })),
         provideHttpClient(
             withInterceptors([apiInterceptor, tokenInterceptor])
-        )
+        ),
+        provideAnimations()
     ]
 };
